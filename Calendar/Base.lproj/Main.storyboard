@@ -35,6 +35,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="todayClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gK5-vz-bID"/>
                                     <action selector="todayMonthView" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eal-6j-4IX"/>
                                 </connections>
                             </button>

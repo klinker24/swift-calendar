@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     
     var daysSet = NSMutableSet()
     
+    @IBAction func todayClicked(sender: AnyObject) {
+        self.switched = true
+    }
     // MARK: - Life cycle
     
     override func viewDidLoad() {
