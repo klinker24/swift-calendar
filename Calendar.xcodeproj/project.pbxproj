@@ -12,7 +12,7 @@
 		55E122231A588CB60013B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E122211A588CB60013B002 /* Main.storyboard */; };
 		55E122251A588CB60013B002 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E122241A588CB60013B002 /* Images.xcassets */; };
 		55E122281A588CB60013B002 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55E122261A588CB60013B002 /* LaunchScreen.xib */; };
-		55E122341A588CB60013B002 /* CVCalendar_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122331A588CB60013B002 /* CVCalendar_DemoTests.swift */; };
+		55E122341A588CB60013B002 /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122331A588CB60013B002 /* CalendarTests.swift */; };
 		55E1224F1A588CC50013B002 /* CVCalendarDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1223F1A588CC50013B002 /* CVCalendarDayView.swift */; };
 		55E122501A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */; };
 		55E122511A588CC50013B002 /* CVCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122411A588CC50013B002 /* CVCalendarManager.swift */; };
@@ -61,7 +61,7 @@
 		55E122271A588CB60013B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		55E1222D1A588CB60013B002 /* CalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E122321A588CB60013B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55E122331A588CB60013B002 /* CVCalendar_DemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVCalendar_DemoTests.swift; sourceTree = "<group>"; };
+		55E122331A588CB60013B002 /* CalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTests.swift; sourceTree = "<group>"; };
 		55E1223F1A588CC50013B002 /* CVCalendarDayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarDayView.swift; sourceTree = "<group>"; };
 		55E122401A588CC50013B002 /* CVCalendarDayViewControlCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarDayViewControlCoordinator.swift; sourceTree = "<group>"; };
 		55E122411A588CC50013B002 /* CVCalendarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCalendarManager.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 		55E122301A588CB60013B002 /* CalendarTests */ = {
 			isa = PBXGroup;
 			children = (
-				55E122331A588CB60013B002 /* CVCalendar_DemoTests.swift */,
+				55E122331A588CB60013B002 /* CalendarTests.swift */,
 				55E122311A588CB60013B002 /* Supporting Files */,
 			);
 			path = CalendarTests;
@@ -389,7 +389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55E122341A588CB60013B002 /* CVCalendar_DemoTests.swift in Sources */,
+				55E122341A588CB60013B002 /* CalendarTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
