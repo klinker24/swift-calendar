@@ -144,7 +144,7 @@ extension ViewController: CVCalendarViewDelegate {
             message = "No Scheduled Events"
         }
         
-        var alert = UIAlertController(title: "Events",
+        var alert = UIAlertController(title: "\(date.commonDescription)",
             message: message,
             preferredStyle: .Alert)
         
