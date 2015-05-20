@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     var animationFinished = true
     var switched = false
     
+    var daysSet = NSMutableSet()
+    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
@@ -26,6 +28,38 @@ class ViewController: UIViewController {
         calendarView.commitCalendarViewUpdate()
         menuView.commitMenuViewUpdate()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"Event")
+        
+        var error: NSError?
+        
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as? [NSManagedObject]
+        
+        if let results = fetchedResults {
+            for r in results {
+                var day = r.valueForKey("day") as! Int
+                var month = r.valueForKey("month") as! Int
+                var year = r.valueForKey("year") as! Int
+                var s = "\(day) \(month) \(year)"
+                
+                daysSet.addObject(s)
+            }
+            
+            println("set: \(daysSet)")
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
+    }
+    
+    
 }
 
 // MARK: - CVCalendarViewDelegate
@@ -160,6 +194,8 @@ extension ViewController: CVCalendarViewDelegate {
         
         alert.addTextFieldWithConfigurationHandler {
             (textField: UITextField!) -> Void in
+            let textField = alert.textFields![0] as! UITextField
+            textField.placeholder = "Add Event"
         }
         
         alert.addAction(saveAction)
@@ -246,13 +282,34 @@ extension ViewController: CVCalendarViewDelegate {
     
     // TODO: dots for the days with events
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-        let day = dayView.date.day
-        let randomDay = Int(arc4random_uniform(31))
-        if day == randomDay {
+        let date = dayView.date
+        
+        if isToday(date) {
             return false
         }
         
+        var s = "\(date.day) \(date.month) \(date.year)"
+        
+        if daysSet.containsObject(s) {
+            return true
+        }
+        
         return false
+    }
+    
+    func isToday(date : CVDate) -> Bool {
+        let today = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear, fromDate: today)
+        let day = components.day
+        let month = components.month
+        let year = components.year
+        
+        if day == date.day && month == date.month && year == date.year {
+            return true
+        } else {
+            return false
+        }
     }
     
     func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> UIColor {
