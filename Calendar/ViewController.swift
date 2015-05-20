@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
     // MARK: - Properties
@@ -9,6 +10,7 @@ class ViewController: UIViewController {
     
     var shouldShowDaysOut = false
     var animationFinished = true
+    var switched = false
     
     // MARK: - Life cycle
     
@@ -80,6 +82,7 @@ extension ViewController: CVCalendarViewDelegate
 
 
 extension ViewController: CVCalendarViewDelegate {
+    
     func presentationMode() -> CalendarMode {
         return .MonthView
     }
@@ -94,11 +97,113 @@ extension ViewController: CVCalendarViewDelegate {
     
     func didSelectDayView(dayView: CVCalendarDayView) {
         let date = dayView.date
-        println("\(date.commonDescription) is selected!")
+        
+        if (self.switched == true) {
+            switched = false
+            return
+        }
+        
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"Event")
+        
+        var andList = [NSPredicate]()
+        andList.append(NSPredicate(format: "day = %i", date.day as Int))
+        andList.append(NSPredicate(format: "month = %i", date.month as Int))
+        andList.append(NSPredicate(format: "year = %i", date.year as Int))
+        
+        var compound = NSCompoundPredicate.andPredicateWithSubpredicates(andList)
+
+        fetchRequest.predicate = compound
+        
+        var error: NSError?
+        
+        let fetchedResults =
+        managedContext.executeFetchRequest(fetchRequest,
+            error: &error) as? [NSManagedObject]
+        
+        var message = ""
+        if let results = fetchedResults {
+            for r in results {
+                let val = r.valueForKey("title") as! String
+                
+                if (message != "") {
+                    message = "\(message)\n"
+                }
+                
+                message = "\(message) \(val)"
+            }
+            
+            if (message == "") {
+                message = "No Schedule Events"
+            }
+        } else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+            message = "No Scheduled Events"
+        }
+        
+        var alert = UIAlertController(title: "Events",
+            message: message,
+            preferredStyle: .Alert)
+        
+        let saveAction = UIAlertAction(title: "Add",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                let textField = alert.textFields![0] as! UITextField
+                self.saveEvent(textField.text, date: date)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Close",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+        }
+        
+        alert.addTextFieldWithConfigurationHandler {
+            (textField: UITextField!) -> Void in
+        }
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert,
+            animated: true,
+            completion: nil)
+    }
+    
+    func saveEvent(title: String, date: Date) {
+        //1
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext!
+        
+        //2
+        let entity =  NSEntityDescription.entityForName("Event",
+            inManagedObjectContext:
+            managedContext)
+        
+        let event = NSManagedObject(entity: entity!,
+            insertIntoManagedObjectContext:managedContext)
+        
+        //3
+        event.setValue(title, forKey: "title")
+        event.setValue(date.day, forKey: "day")
+        event.setValue(date.month, forKey: "month")
+        event.setValue(date.year, forKey: "year")
+        
+        //4
+        var error: NSError?
+        if !managedContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
+        
     }
     
     func presentedDateUpdated(date: CVDate) {
         if monthLabel.text != date.globalDescription && self.animationFinished {
+            
+            switched = true
+            
             let updatedMonthLabel = UILabel()
             updatedMonthLabel.textColor = monthLabel.textColor
             updatedMonthLabel.font = monthLabel.font
@@ -144,7 +249,7 @@ extension ViewController: CVCalendarViewDelegate {
         let day = dayView.date.day
         let randomDay = Int(arc4random_uniform(31))
         if day == randomDay {
-            return true
+            return false
         }
         
         return false
