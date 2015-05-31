@@ -12,8 +12,18 @@ class ViewController: UIViewController {
     var animationFinished = true
     var switched = false
     
-    var daysSet = NSMutableSet()
+    var singleTap = false
+    var doubleTap = false
     
+    @IBOutlet weak var event1: UILabel!
+    @IBOutlet weak var event2: UILabel!
+    @IBOutlet weak var event3: UILabel!
+    @IBOutlet weak var event4: UILabel!
+    @IBOutlet weak var event5: UILabel!
+    @IBOutlet weak var event6: UILabel!
+    
+    var daysSet = NSMutableSet()
+        
     @IBAction func todayClicked(sender: AnyObject) {
         self.switched = true
     }
@@ -140,6 +150,30 @@ extension ViewController: CVCalendarViewDelegate {
             return
         }
         
+        let delay = 0.25 * Double(NSEC_PER_SEC);
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            if (self.singleTap == true && self.doubleTap == false) {
+                // todo: write the days events into the text field below the calendar
+                println("single tap to display events")
+                self.getEvents(date)
+            }
+            
+            self.singleTap = false
+            self.doubleTap = false
+        }
+        
+        if (self.singleTap == true) {
+            self.doubleTap = true
+            
+            println("double tap to open creation dialog")
+            createNewEventDialog(date)
+        }
+        
+        self.singleTap = true
+    }
+    
+    func getEvents(date: Date) {
         let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -152,7 +186,7 @@ extension ViewController: CVCalendarViewDelegate {
         andList.append(NSPredicate(format: "year = %i", date.year as Int))
         
         var compound = NSCompoundPredicate.andPredicateWithSubpredicates(andList)
-
+        
         fetchRequest.predicate = compound
         
         var error: NSError?
@@ -162,6 +196,8 @@ extension ViewController: CVCalendarViewDelegate {
             error: &error) as? [NSManagedObject]
         
         var message = ""
+        var current = 1
+        
         if let results = fetchedResults {
             for r in results {
                 let val = r.valueForKey("title") as! String
@@ -185,6 +221,28 @@ extension ViewController: CVCalendarViewDelegate {
             message: message,
             preferredStyle: .Alert)
         
+        let cancelAction = UIAlertAction(title: "Ok",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+        }
+        
+        let editAction = UIAlertAction(title: "Edit",
+            style: .Default) { (action: UIAlertAction!) -> Void in
+                
+        }
+        
+        alert.addAction(editAction)
+        alert.addAction(cancelAction)
+        
+        presentViewController(alert,
+            animated: true,
+            completion: nil)
+    }
+    
+    func createNewEventDialog(date: Date) {
+        var alert = UIAlertController(title: "\(date.commonDescription)",
+            message: "Enter a new event",
+            preferredStyle: .Alert)
+        
         let saveAction = UIAlertAction(title: "Add",
             style: .Default) { (action: UIAlertAction!) -> Void in
                 let textField = alert.textFields![0] as! UITextField
@@ -201,8 +259,8 @@ extension ViewController: CVCalendarViewDelegate {
             textField.placeholder = "Add Event"
         }
         
-        alert.addAction(saveAction)
         alert.addAction(cancelAction)
+        alert.addAction(saveAction)
         
         presentViewController(alert,
             animated: true,
