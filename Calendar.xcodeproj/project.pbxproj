@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		55E1221E1A588CB60013B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221D1A588CB60013B002 /* AppDelegate.swift */; };
-		55E122201A588CB60013B002 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221F1A588CB60013B002 /* CalendarViewController.swift */; };
-		55E122231A588CB60013B002 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E122211A588CB60013B002 /* Calendar.storyboard */; };
+		55E122201A588CB60013B002 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E1221F1A588CB60013B002 /* ViewController.swift */; };
+		55E122231A588CB60013B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55E122211A588CB60013B002 /* Main.storyboard */; };
 		55E122251A588CB60013B002 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55E122241A588CB60013B002 /* Images.xcassets */; };
 		55E122281A588CB60013B002 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55E122261A588CB60013B002 /* LaunchScreen.xib */; };
 		55E122341A588CB60013B002 /* CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E122331A588CB60013B002 /* CalendarTests.swift */; };
@@ -56,8 +56,8 @@
 		55E122181A588CB60013B002 /* Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E1221C1A588CB60013B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55E1221D1A588CB60013B002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		55E1221F1A588CB60013B002 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		55E122221A588CB60013B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Calendar.storyboard; sourceTree = "<group>"; };
+		55E1221F1A588CB60013B002 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		55E122221A588CB60013B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		55E122241A588CB60013B002 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		55E122271A588CB60013B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		55E1222D1A588CB60013B002 /* CalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,8 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				55E1221D1A588CB60013B002 /* AppDelegate.swift */,
-				55E1221F1A588CB60013B002 /* CalendarViewController.swift */,
-				55E122211A588CB60013B002 /* Calendar.storyboard */,
+				55E1221F1A588CB60013B002 /* ViewController.swift */,
+				55E122211A588CB60013B002 /* Main.storyboard */,
 				55E122241A588CB60013B002 /* Images.xcassets */,
 				55E122261A588CB60013B002 /* LaunchScreen.xib */,
 				55E1221B1A588CB60013B002 /* Supporting Files */,
@@ -338,7 +338,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55E122231A588CB60013B002 /* Calendar.storyboard in Resources */,
+				55E122231A588CB60013B002 /* Main.storyboard in Resources */,
 				55E122281A588CB60013B002 /* LaunchScreen.xib in Resources */,
 				55E122251A588CB60013B002 /* Images.xcassets in Resources */,
 			);
@@ -368,7 +368,7 @@
 				8F827D071ABF682B005294B1 /* CVAuxiliaryView.swift in Sources */,
 				8F6D3F1C1ADAF1190028BE6D /* CVCalendarMonthContentViewController.swift in Sources */,
 				55E1225D1A588CC50013B002 /* CVDate.swift in Sources */,
-				55E122201A588CB60013B002 /* CalendarViewController.swift in Sources */,
+				55E122201A588CB60013B002 /* ViewController.swift in Sources */,
 				8F6993221ADE716300D433FB /* CVCalendarViewPresentationMode.swift in Sources */,
 				8F1080B81AB89CCB00D9FAC6 /* CVSelectionType.swift in Sources */,
 				8F1080B61AB89B9700D9FAC6 /* CVCalendarTouchController.swift in Sources */,
@@ -409,12 +409,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		55E122211A588CB60013B002 /* Calendar.storyboard */ = {
+		55E122211A588CB60013B002 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				55E122221A588CB60013B002 /* Base */,
 			);
-			name = Calendar.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		55E122261A588CB60013B002 /* LaunchScreen.xib */ = {

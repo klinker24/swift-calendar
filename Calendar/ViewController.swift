@@ -15,12 +15,7 @@ class ViewController: UIViewController {
     var singleTap = false
     var doubleTap = false
     
-    @IBOutlet weak var event1: UILabel!
-    @IBOutlet weak var event2: UILabel!
-    @IBOutlet weak var event3: UILabel!
-    @IBOutlet weak var event4: UILabel!
-    @IBOutlet weak var event5: UILabel!
-    @IBOutlet weak var event6: UILabel!
+    @IBOutlet weak var events: UILabel!
     
     var daysSet = NSMutableSet()
         
@@ -156,7 +151,7 @@ extension ViewController: CVCalendarViewDelegate {
             if (self.singleTap == true && self.doubleTap == false) {
                 // todo: write the days events into the text field below the calendar
                 println("single tap to display events")
-                self.getEvents(date)
+                self.events.text = self.getEvents(date)
             }
             
             self.singleTap = false
@@ -167,13 +162,15 @@ extension ViewController: CVCalendarViewDelegate {
             self.doubleTap = true
             
             println("double tap to open creation dialog")
-            createNewEventDialog(date)
+            var events = self.getEvents(date)
+            self.events.text = events
+            createNewEventDialog(date, message: "")
         }
         
         self.singleTap = true
     }
     
-    func getEvents(date: Date) {
+    func getEvents(date: Date) -> String {
         let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -206,41 +203,25 @@ extension ViewController: CVCalendarViewDelegate {
                     message = "\(message)\n"
                 }
                 
-                message = "\(message) \(val)"
+                message = "\(message)\(current).) \(val)"
+                
+                current = current + 1
             }
             
             if (message == "") {
-                message = "No Schedule Events"
+                message = "No Scheduled Events"
             }
         } else {
             println("Could not fetch \(error), \(error!.userInfo)")
             message = "No Scheduled Events"
         }
         
-        var alert = UIAlertController(title: "\(date.commonDescription)",
-            message: message,
-            preferredStyle: .Alert)
-        
-        let cancelAction = UIAlertAction(title: "Ok",
-            style: .Default) { (action: UIAlertAction!) -> Void in
-        }
-        
-        let editAction = UIAlertAction(title: "Edit",
-            style: .Default) { (action: UIAlertAction!) -> Void in
-                
-        }
-        
-        alert.addAction(editAction)
-        alert.addAction(cancelAction)
-        
-        presentViewController(alert,
-            animated: true,
-            completion: nil)
+        return message
     }
     
-    func createNewEventDialog(date: Date) {
+    func createNewEventDialog(date: Date, message: String) {
         var alert = UIAlertController(title: "\(date.commonDescription)",
-            message: "Enter a new event",
+            message: message,
             preferredStyle: .Alert)
         
         let saveAction = UIAlertAction(title: "Add",
@@ -257,6 +238,7 @@ extension ViewController: CVCalendarViewDelegate {
             (textField: UITextField!) -> Void in
             let textField = alert.textFields![0] as! UITextField
             textField.placeholder = "Add Event"
+            textField.autocapitalizationType = UITextAutocapitalizationType.Words
         }
         
         alert.addAction(cancelAction)

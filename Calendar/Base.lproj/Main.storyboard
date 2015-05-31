@@ -51,6 +51,12 @@
                                     <outlet property="calendarDelegate" destination="vXZ-lx-hvc" id="BGr-mw-JIs"/>
                                 </connections>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAs-VA-N78">
+                                <rect key="frame" x="16" y="383" width="568" height="209"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -69,6 +75,7 @@
                     </view>
                     <connections>
                         <outlet property="calendarView" destination="T1w-UY-QHC" id="D3D-pv-Xhz"/>
+                        <outlet property="events" destination="IAs-VA-N78" id="dOq-hz-bW1"/>
                         <outlet property="menuView" destination="ZPD-eB-kRA" id="zjt-49-rDh"/>
                         <outlet property="monthLabel" destination="xf5-AN-qLk" id="fGT-h7-JSE"/>
                     </connections>
