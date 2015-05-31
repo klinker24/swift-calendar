@@ -142,7 +142,7 @@ extension ViewController: CVCalendarViewDelegate {
         
         if (self.switched == true) {
             switched = false
-            return
+            //return
         }
         
         let delay = 0.25 * Double(NSEC_PER_SEC);
