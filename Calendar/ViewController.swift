@@ -44,27 +44,26 @@ class ViewController: UIViewController {
         UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest(entityName:"Event")
-        
-        var error: NSError?
-        
-        let fetchedResults =
-        managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as? [NSManagedObject]
-        
-        if let results = fetchedResults {
-            for r in results {
-                var day = r.valueForKey("day") as! Int
-                var month = r.valueForKey("month") as! Int
-                var year = r.valueForKey("year") as! Int
-                var s = "\(day) \(month) \(year)"
+
+        do {
+         let fetchedResults =
+                try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+            
+            for r in fetchedResults! {
+                let day = r.valueForKey("day") as! Int
+                let month = r.valueForKey("month") as! Int
+                let year = r.valueForKey("year") as! Int
+                let s = "\(day) \(month) \(year)"
                 
                 daysSet.addObject(s)
             }
             
-            println("set: \(daysSet)")
-        } else {
-            println("Could not fetch \(error), \(error!.userInfo)")
+            print("set: \(daysSet)")
+            
+        } catch let error {
+             print("Could not fetch \(error)")
         }
+        
     }
     
     
@@ -85,7 +84,7 @@ extension ViewController: CVCalendarViewDelegate
         let ringLineWidth: CGFloat = 0.0
         let ringLineColour: UIColor = .blueColor()
         
-        var newView = UIView(frame: dayView.bounds)
+        let newView = UIView(frame: dayView.bounds)
         
         let diameter: CGFloat = (newView.bounds.width) - ringSpacing
         let radius: CGFloat = diameter / 2.0
@@ -99,7 +98,7 @@ extension ViewController: CVCalendarViewDelegate
         ringLayer.lineWidth = ringLineWidth
         ringLayer.strokeColor = ringLineColour.CGColor
         
-        var ringLineWidthInset: CGFloat = CGFloat(ringLineWidth/2.0) + ringInsetWidth
+        let ringLineWidthInset: CGFloat = CGFloat(ringLineWidth/2.0) + ringInsetWidth
         let ringRect: CGRect = CGRectInset(rect, ringLineWidthInset, ringLineWidthInset)
         let centrePoint: CGPoint = CGPointMake(ringRect.midX, ringRect.midY)
         let startAngle: CGFloat = CGFloat(-π/2.0)
@@ -120,10 +119,6 @@ extension ViewController: CVCalendarViewDelegate
         }
         return false
     }
-}
-
-
-extension ViewController: CVCalendarViewDelegate {
     
     func presentationMode() -> CalendarMode {
         return .MonthView
@@ -150,7 +145,7 @@ extension ViewController: CVCalendarViewDelegate {
         dispatch_after(time, dispatch_get_main_queue()) {
             if (self.singleTap == true && self.doubleTap == false) {
                 // todo: write the days events into the text field below the calendar
-                println("single tap to display events")
+                print("single tap to display events")
                 self.events.text = self.getEvents(date)
             }
             
@@ -161,8 +156,8 @@ extension ViewController: CVCalendarViewDelegate {
         if (self.singleTap == true) {
             self.doubleTap = true
             
-            println("double tap to open creation dialog")
-            var events = self.getEvents(date)
+            print("double tap to open creation dialog")
+            let events = self.getEvents(date)
             self.events.text = events
             createNewEventDialog(date, message: "")
         }
@@ -182,21 +177,19 @@ extension ViewController: CVCalendarViewDelegate {
         andList.append(NSPredicate(format: "month = %i", date.month as Int))
         andList.append(NSPredicate(format: "year = %i", date.year as Int))
         
-        var compound = NSCompoundPredicate.andPredicateWithSubpredicates(andList)
+        let compound = NSCompoundPredicate.init(andPredicateWithSubpredicates: andList)
+        
+        
+//        let compound = NSCompoundPredicate.andPredicateWithSubpredicates(andList)
         
         fetchRequest.predicate = compound
-        
-        var error: NSError?
-        
-        let fetchedResults =
-        managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as? [NSManagedObject]
-        
         var message = ""
         var current = 1
         
-        if let results = fetchedResults {
-            for r in results {
+        do {
+         let fetchedResults =
+                try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+            for r in fetchedResults! {
                 let val = r.valueForKey("title") as! String
                 
                 if (message != "") {
@@ -211,8 +204,9 @@ extension ViewController: CVCalendarViewDelegate {
             if (message == "") {
                 message = "No Scheduled Events"
             }
-        } else {
-            println("Could not fetch \(error), \(error!.userInfo)")
+            
+        } catch let error {
+            print("Could not fetch \(error)")
             message = "No Scheduled Events"
         }
         
@@ -220,23 +214,23 @@ extension ViewController: CVCalendarViewDelegate {
     }
     
     func createNewEventDialog(date: Date, message: String) {
-        var alert = UIAlertController(title: "\(date.commonDescription)",
+        let alert = UIAlertController(title: "\(date.commonDescription)",
             message: message,
             preferredStyle: .Alert)
         
         let saveAction = UIAlertAction(title: "Add",
-            style: .Default) { (action: UIAlertAction!) -> Void in
-                let textField = alert.textFields![0] as! UITextField
-                self.saveEvent(textField.text, date: date)
+            style: .Default) { (action: UIAlertAction) -> Void in
+                let textField = alert.textFields![0] 
+                self.saveEvent(textField.text!, date: date)
         }
         
         let cancelAction = UIAlertAction(title: "Close",
-            style: .Default) { (action: UIAlertAction!) -> Void in
+            style: .Default) { (action: UIAlertAction) -> Void in
         }
         
         alert.addTextFieldWithConfigurationHandler {
             (textField: UITextField!) -> Void in
-            let textField = alert.textFields![0] as! UITextField
+            let textField = alert.textFields![0] 
             textField.placeholder = "Add Event"
             textField.autocapitalizationType = UITextAutocapitalizationType.Words
         }
@@ -272,8 +266,11 @@ extension ViewController: CVCalendarViewDelegate {
         
         //4
         var error: NSError?
-        if !managedContext.save(&error) {
-            println("Could not save \(error), \(error?.userInfo)")
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            error = error1
+            print("Could not save \(error), \(error?.userInfo)")
         }
         
     }
@@ -331,7 +328,7 @@ extension ViewController: CVCalendarViewDelegate {
             return false
         }
         
-        var s = "\(date.day) \(date.month) \(date.year)"
+        let s = "\(date.day) \(date.month) \(date.year)"
         
         if daysSet.containsObject(s) {
             return true
@@ -343,7 +340,7 @@ extension ViewController: CVCalendarViewDelegate {
     func isToday(date : CVDate) -> Bool {
         let today = NSDate()
         let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear, fromDate: today)
+        let components = calendar.components([.Day, .Month, .Year], fromDate: today)
         let day = components.day
         let month = components.month
         let year = components.year

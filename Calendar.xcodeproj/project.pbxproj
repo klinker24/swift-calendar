@@ -301,6 +301,8 @@
 		55E122101A588CB60013B002 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0730;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = GameApp;
 				TargetAttributes = {
